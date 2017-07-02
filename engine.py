@@ -1,5 +1,6 @@
 import libtcodpy as libtcod
-from entity import  Entity
+from entity import Entity
+from render_functions import clear_all, render_all
 import input_handler
 
 
@@ -26,12 +27,10 @@ def main():
     while not libtcod.console_is_window_closed():
         libtcod.sys_check_for_event(libtcod.EVENT_KEY_PRESS, key, mouse)
 
-        libtcod.console_set_default_foreground(con, libtcod.white)
-        libtcod.console_put_char(con, player.x, player.y, '@', libtcod.BKGND_NONE)
-        libtcod.console_blit(con, 0,0, screen_width, screen_height, 0,0,0)
+        render_all(con, entities, screen_width, screen_height)
         libtcod.console_flush()
 
-        libtcod.console_put_char(con, player.x, player.y, ' ', libtcod.BKGND_NONE)
+        clear_all(con, entities)
 
         action = input_handler.handle_keys(key)
         move = action.get('move')
