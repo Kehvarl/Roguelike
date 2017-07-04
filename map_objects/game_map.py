@@ -1,3 +1,4 @@
+from random import randint
 from map_objects.tile import Tile
 from map_objects.rectangle import Rect
 
@@ -13,17 +14,53 @@ class GameMap:
 
         return tiles
 
-    def make_map(self):
+    def make_map(self, max_rooms, room_min_size, room_max_size, map_width, map_height, player):
         """
-        Creates rooms for demonstration purposes
+        Create the main Game Map
+        :param int max_rooms:
+        :param int room_min_size:
+        :param int room_max_size:
+        :param int map_width:
+        :param int map_height:
+        :param Entity player:
         """
-        room1 = Rect(20, 15, 10, 15)
-        room2 = Rect(35, 15, 10, 15)
 
-        self.create_room(room1)
-        self.create_room(room2)
+        rooms = []
+        num_rooms = 0
+        for r in range(max_rooms):
+            w = randint(room_min_size, room_max_size)
+            h = randint(room_min_size, room_max_size)
+            x = randint(0, map_width - w - 1)
+            y = randint(0, map_height - h - 1)
 
-        self.create_h_tunnel(25, 40, 23)
+        new_room = Rect(x, y, w, h)
+        for other_room in rooms:
+            if new_room.intersect(other_room):
+                break
+        else:
+            self.create_room(new_room)
+            (new_x, new_y) = new_room.center()
+            if num_rooms == 0:
+                player.x = new_x
+                player.y = new_y
+            else:
+                # all rooms after the first:
+                # connect it to the previous room with a tunnel
+
+                # center coordinates of previous room
+                (prev_x, prev_y) = rooms[num_rooms - 1].center()
+
+                # flip a coin (random number that is either 0 or 1)
+                if randint(0, 1) == 1:
+                    # first move horizontally, then vertically
+                    self.create_h_tunnel(prev_x, new_x, prev_y)
+                    self.create_v_tunnel(prev_y, new_y, new_x)
+                else:
+                    # first move vertically, then horizontally
+                    self.create_v_tunnel(prev_y, new_y, prev_x)
+                    self.create_h_tunnel(prev_x, new_x, new_y)
+            rooms.append(new_room)
+            num_rooms += 1
 
     def create_room(self, room):
         """
