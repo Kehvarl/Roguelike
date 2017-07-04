@@ -10,6 +10,6 @@ class Tile:
         else:
             self.block_sight = block_sight
 
-    def block(self):
-        self.block_sight = True
-        self.block_move = True
+    def block(self, state=True):
+        self.block_sight = state
+        self.block_move = state
