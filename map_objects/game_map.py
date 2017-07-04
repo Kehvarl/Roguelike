@@ -1,4 +1,4 @@
-from map_objects.tile import  Tile
+from map_objects.tile import Tile
 
 
 class GameMap:
@@ -7,12 +7,8 @@ class GameMap:
         self.height = height
         self.tiles = self.initialize_tiles()
 
-    def initialize_tiles(self):
-        tiles = [[Tile(False) for y in range(self.height)] for x in range(self.width)]
-
-        tiles[30][22].block()
-        tiles[31][22].block()
-        tiles[32][22].block()
+    def initialize_tiles(self, default_block=True):
+        tiles = [[Tile(default_block) for y in range(self.height)] for x in range(self.width)]
 
         return tiles
 
