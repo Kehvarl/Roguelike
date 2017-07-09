@@ -28,7 +28,7 @@ def render_all(con, entities, game_map, screen_width, screen_height, colors):
 
 def clear_all(con, entities):
     """
-    Erases all entities in the list
+    Erases, from screen, all entities in the list
     :param con: The console to draw on
     :param entities: List of Entity objects
     """
@@ -48,7 +48,7 @@ def draw_entity(con, entity):
 
 def clear_entity(con, entity):
     """
-    Erase the character that represents this object
+    Erase, from the screen, an object representation
     :param con: The console to draw on
     :param entity: Entity object to clear
     """

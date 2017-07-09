@@ -11,5 +11,9 @@ class Tile:
             self.block_sight = block_sight
 
     def block(self, state=True):
+        """
+        Set the blocking (movement and sight) state of this tile
+        :param boolean state: The desired blocking state
+        """
         self.block_sight = state
         self.block_move = state
