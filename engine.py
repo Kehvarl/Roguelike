@@ -1,4 +1,5 @@
 import libtcodpy as libtcod
+from components.fighter import Fighter
 from entity import Entity, get_blocking_entities_at_location
 from render_functions import clear_all, render_all
 from map_objects.game_map import GameMap
@@ -38,7 +39,8 @@ def main():
     # Initial Player and NPC locations
     # center_x = int(screen_width / 2)
     # center_y = int(screen_height / 2)
-    player = Entity(0, 0, '@', libtcod.white, 'Player', blocks=True)
+    fighter_component = Fighter(hp=30, defense=2, power=5)
+    player = Entity(0, 0, '@', libtcod.white, 'Player', blocks=True, fighter=fighter_component)
     entities = [player]
 
     # Setup Display
@@ -103,8 +105,8 @@ def main():
 
         if game_state == GameStates.ENEMY_TURN:
             for entity in entities:
-                if entity != player:
-                    print('The ' + entity.name + ' ponders the meaning of its existence.')
+                if entity.ai:
+                    entity.ai.take_turn()
 
             game_state = GameStates.PLAYERS_TURN
 
