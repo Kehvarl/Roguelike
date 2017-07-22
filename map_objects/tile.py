@@ -10,6 +10,8 @@ class Tile:
         else:
             self.block_sight = block_sight
 
+        self.explored = False
+
     def block(self, state=True):
         """
         Set the blocking (movement and sight) state of this tile
