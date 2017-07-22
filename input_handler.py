@@ -4,18 +4,28 @@ import libtcodpy as libtcod
 def handle_keys(key):
     """
 
-    :param libtcon.Key key: Keypress performed by player
+    :param libtcod.Key key: Keypress performed by player
     :return dictionary: Command to perform
     """
+    key_char = chr(key.c)
+
     # Movement Keys
-    if key.vk == libtcod.KEY_UP:
+    if key.vk == libtcod.KEY_UP or key_char == 'k':
         return _move(0, -1)
-    elif key.vk == libtcod.KEY_DOWN:
+    elif key.vk == libtcod.KEY_DOWN or key_char == 'j':
         return _move(0, 1)
-    elif key.vk == libtcod.KEY_LEFT:
+    elif key.vk == libtcod.KEY_LEFT or key_char == 'h':
         return _move(-1, 0)
-    elif key.vk == libtcod.KEY_RIGHT:
+    elif key.vk == libtcod.KEY_RIGHT or key_char == 'l':
         return _move(1, 0)
+    elif key_char == 'y':
+        return _move(-1, -1)
+    elif key_char == 'u':
+        return _move(1, -1)
+    elif key_char == 'b':
+        return _move(-1, 1)
+    elif key_char == 'n':
+        return _move(1, 1)
 
     # Alt+Enter: toggle full screen
     if key.vk == libtcod.KEY_ENTER and key.lalt:
