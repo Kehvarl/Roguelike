@@ -14,9 +14,13 @@ def main():
     # Screen Size
     screen_width = 80
     screen_height = 50
+    # GUI layout
+    bar_width = 20
+    panel_height = 7
+    panel_y = screen_height - panel_height
     # Map size
     map_width = 80
-    map_height = 45
+    map_height = 43
     # Room size and count
     room_max_size = 10
     room_min_size = 6
@@ -50,6 +54,7 @@ def main():
     # Create Main Window/Console
     libtcod.console_init_root(screen_width, screen_height, 'libtcod tutorial revised (Py3)', False)
     con = libtcod.console_new(screen_width, screen_height)
+    panel = libtcod.console_new(screen_width, panel_height)
 
     # Generate Game Map
     game_map = GameMap(map_width, map_height)
@@ -73,7 +78,8 @@ def main():
         if fov_recompute:
             recompute_fov(fov_map, player.x, player.y, fov_radius, fov_light_walls, fov_algorithm)
 
-        render_all(con, entities, player, game_map, fov_map, fov_recompute, screen_width, screen_height, colors)
+        render_all(con, panel, entities, player, game_map, fov_map, fov_recompute, screen_width, screen_height,
+                   bar_width, panel_height, panel_y, colors)
         fov_recompute = False
 
         libtcod.console_flush()
