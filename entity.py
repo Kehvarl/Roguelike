@@ -72,7 +72,7 @@ class Entity:
 
         # Allocate a A* path
         # The 1.41 is the normal diagonal cost of moving, it can be set as 0.0 if diagonal moves are prohibited
-        my_path = libtcod.path_new_using_map(fov, 1.41)
+        my_path = libtcod.path_new_using_map(fov, 1.40)
 
         # Compute the path between self's coordinates and the target's coordinates
         libtcod.path_compute(my_path, self.x, self.y, target.x, target.y)
@@ -100,7 +100,7 @@ class Entity:
 
     def distance_to(self, other):
         dx = other.x - self.x
-        dy = other.x - self.y
+        dy = other.y - self.y
         return math.sqrt(dx ** 2 + dy ** 2)
 
 
