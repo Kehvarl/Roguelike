@@ -3,6 +3,7 @@ from random import randint
 import libtcodpy as libtcod
 from components.ai import BasicMonster
 from components.fighter import Fighter
+from components.item import Item
 from entity import Entity
 from map_objects.rectangle import Rect
 from map_objects.tile import Tile
@@ -15,6 +16,7 @@ class GameMap:
     Tracks location and state of all tiles
     Performs random map generation
     """
+
     def __init__(self, width, height):
         self.width = width
         self.height = height
@@ -26,7 +28,7 @@ class GameMap:
         return tiles
 
     def make_map(self, max_rooms, room_min_size, room_max_size, map_width, map_height, player, entities,
-                 max_monsters_per_room):
+                 max_monsters_per_room=0, max_items_per_room=0):
         """
         Create a random map
         :param int max_rooms:
@@ -37,6 +39,7 @@ class GameMap:
         :param Entity player:
         :param list entities:
         :param int max_monsters_per_room:
+        :param int max_items_per_room:
         """
 
         rooms = []
@@ -76,7 +79,7 @@ class GameMap:
                         self.create_v_tunnel(prev_y, new_y, prev_x)
                         self.create_h_tunnel(prev_x, new_x, new_y)
 
-                self.place_entities(new_room, entities, max_monsters_per_room)
+                self.place_entities(new_room, entities, max_monsters_per_room, max_items_per_room)
                 # Add room to list
                 rooms.append(new_room)
                 num_rooms += 1
@@ -110,14 +113,16 @@ class GameMap:
         for y in range(min(y1, y2), max(y1, y2) + 1):
             self.tiles[x][y].block(False)
 
-    def place_entities(self, room, entities, max_monsters_per_room):
+    def place_entities(self, room, entities, max_monsters_per_room=0, max_items_per_room=0):
         """
         Set some random monsters in this room
         :param room: The room rectangle to add monsters
         :param entities: A list of monsters and their locations in the map
         :param max_monsters_per_room: Limit to monsters in a room
+        :param max_items_per_room: Limit to items in a room
         """
         number_of_monsters = randint(0, max_monsters_per_room)
+        number_of_items = randint(0, max_items_per_room)
 
         for i in range(number_of_monsters):
             x = randint(room.x1 + 1, room.x2 - 1)
@@ -137,6 +142,17 @@ class GameMap:
                                      render_order=RenderOrder.ACTOR, fighter=fighter_component, ai=ai_component)
 
                 entities.append(monster)
+
+        for i in range(number_of_items):
+            x = randint(room.x1 + 1, room.x2 - 1)
+            y = randint(room.y1 + 1, room.y2 - 1)
+
+            if not any([entity for entity in entities if entity.x == x and entity.y == y]):
+                item_component = Item()
+                item = Entity(x, y, '!', libtcod.violet, 'Healing Potion', render_order=RenderOrder.ITEM,
+                              item=item_component)
+
+                entities.append(item)
 
     def is_blocked(self, x, y):
         """
