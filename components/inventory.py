@@ -7,8 +7,14 @@ class Inventory:
     def __init__(self, capacity):
         self.capacity = capacity
         self.items = []
+        self.owner = None
 
     def add_item(self, item):
+        """
+        Add an item to your inventory... if you can!
+        :param Item item: the item to add
+        :return dict: Messages describing results
+        """
         results = []
 
         if len(self.items) >= self.capacity:
@@ -24,3 +30,36 @@ class Inventory:
             self.items.append(item)
 
         return results
+
+    def use(self, item_entity, **kwargs):
+        """
+        Use an item.  Gain it's power!
+        :param Item item_entity: The item to use
+        :param kwargs:
+        :return dict: Messages describing results
+        """
+        results = []
+
+        item_component = item_entity.item
+
+        if item_component.use_function is None:
+            results.append({'message': Message('The {0} cannot be used'.format(item_entity.name), libtcod.yellow)})
+        else:
+            kwargs = {**item_component.function_kwargs, **kwargs}
+            item_use_results = item_component.use_function(self.owner, **kwargs)
+
+            for item_use_result in item_use_results:
+                if item_use_result.get('consumed'):
+                    self.remove_item(item_entity)
+
+            results.extend(item_use_results)
+
+        return results
+
+    def remove_item(self, item):
+        """
+        Remove an item from inventory
+        :param Item item: the item to remove
+        :return dict: Messages describing results
+        """
+        self.items.remove(item)

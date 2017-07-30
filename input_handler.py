@@ -1,7 +1,25 @@
 import libtcodpy as libtcod
+from game_states import GameStates
 
 
-def handle_keys(key):
+def handle_keys(key, game_state):
+    """
+
+    :param libtcod.Key key: Keypress performed by player
+    :param GameState game_state: which game state we're currently in
+    :return dictionary: Command to perform
+    """
+    if game_state == GameStates.PLAYERS_TURN:
+        return handle_player_turn_keys(key)
+    elif game_state == GameStates.PLAYER_DEAD:
+        return handle_player_dead_keys(key)
+    elif game_state == GameStates.SHOW_INVENTORY:
+        return handle_inventory_keys(key)
+
+    return {}
+
+
+def handle_player_turn_keys(key):
     """
 
     :param libtcod.Key key: Keypress performed by player
@@ -44,6 +62,52 @@ def handle_keys(key):
         return {'exit': True}
 
     # Any other keypress: do nothing
+    return {}
+
+
+def handle_player_dead_keys(key):
+    """
+
+    :param libtcod.Key key: Keypress performed by player
+    :return dictionary: Command to perform
+    """
+    key_char = chr(key.c)
+
+    # Show Inventory
+    if key_char == 'i':
+        return {'show_inventory': True}
+
+    # Alt+Enter: toggle full screen
+    if key.vk == libtcod.KEY_ENTER and key.lalt:
+        return {'fullscreen': True}
+
+    # ESC: exit the game
+    elif key.vk == libtcod.KEY_ESCAPE:
+        return {'exit': True}
+
+    # Any other keypress: do nothing
+    return {}
+
+
+def handle_inventory_keys(key):
+    """
+
+    :param libtcod.Key key: Keypress performed by player
+    :return dictionary: Command to perform
+    """
+    index = key.c - ord('a')
+
+    if index >= 0:
+        return {'inventory_index': index}
+
+    # Alt+Enter: toggle full screen
+    if key.vk == libtcod.KEY_ENTER and key.lalt:
+        return {'fullscreen': True}
+
+    # ESC: exit the game
+    elif key.vk == libtcod.KEY_ESCAPE:
+        return {'exit': True}
+
     return {}
 
 
