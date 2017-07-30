@@ -23,6 +23,7 @@ class GameMap:
         self.height = height
         self.tiles = self.initialize_tiles()
 
+    # noinspection PyUnusedLocal
     def initialize_tiles(self, default_block=True):
         tiles = [[Tile(default_block) for y in range(self.height)] for x in range(self.width)]
 
@@ -114,7 +115,8 @@ class GameMap:
         for y in range(min(y1, y2), max(y1, y2) + 1):
             self.tiles[x][y].block(False)
 
-    def place_entities(self, room, entities, max_monsters_per_room=0, max_items_per_room=0):
+    @staticmethod
+    def place_entities(room, entities, max_monsters_per_room=0, max_items_per_room=0):
         """
         Set some random monsters in this room
         :param room: The room rectangle to add monsters

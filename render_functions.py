@@ -37,6 +37,7 @@ def render_bar(panel, x, y, total_width, name, value, maximum, bar_color, back_c
                              '{0}: {1}/{2}'.format(name, value, maximum))
 
 
+# noinspection PyShadowingNames
 def render_all(con, panel, entities, player, game_map, fov_map, fov_recompute, message_log, screen_width, screen_height,
                bar_width, panel_height, panel_y, mouse, colors, game_state):
     """
@@ -47,7 +48,7 @@ def render_all(con, panel, entities, player, game_map, fov_map, fov_recompute, m
     :param Entity player: The player entity
     :param game_map:  The map of Tiles to draw
     :param fov_map: The map holding Field of View information
-    :param fov_recompute:  Need to update the Field of View?
+    :param fov_recompute:  Need to update the Field of ramView?
     :param MessageLog message_log:
     :param screen_width: width (in chars) of console
     :param screen_height:  height (in chars) of console
@@ -56,6 +57,7 @@ def render_all(con, panel, entities, player, game_map, fov_map, fov_recompute, m
     :param panel_y:
     :param libtcod.mouse mouse:
     :param colors: Dictionary of Colors for use with game_map
+    :param game_state: Current GameState
     """
     # Draw all the tiles in the game map
     if fov_recompute:
