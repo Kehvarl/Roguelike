@@ -5,7 +5,6 @@ from components.ai import ConfusedMonster
 from game_messages import Message
 
 
-
 def heal(*args, **kwargs):
     """
 
@@ -112,8 +111,9 @@ def cast_confuse(*args, **kwargs):
             entity.ai = confused_ai
 
             results.append({'consumed': True,
-                            'message': Message('The eyes of {0} look vacant as it starts to stumble around!',
-                                               libtcod.yellow)})
+                            'message': Message(
+                                'The eyes of {0} look vacant as it starts to stumble around!'.format(entity.name),
+                                libtcod.yellow)})
             break
     else:
         results.append(
