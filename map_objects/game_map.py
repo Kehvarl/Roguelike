@@ -4,6 +4,7 @@ import libtcodpy as libtcod
 from components.ai import BasicMonster
 from components.fighter import Fighter
 from components.item import Item
+from components.stairs import Stairs
 from entity import Entity
 from game_messages import Message
 from item_functions import heal, cast_lightning, cast_fireball, cast_confuse
@@ -19,10 +20,17 @@ class GameMap:
     Performs random map generation
     """
 
-    def __init__(self, width, height):
+    def __init__(self, width, height, dungeon_level=1):
+        """
+        Create a new Game Map
+        :param width: Width of map in tiles
+        :param height: Height of map in tiles
+        :param dungeon_level:
+        """
         self.width = width
         self.height = height
         self.tiles = self.initialize_tiles()
+        self.dungeon_level = dungeon_level
 
     # noinspection PyUnusedLocal
     def initialize_tiles(self, default_block=True):
@@ -47,6 +55,9 @@ class GameMap:
 
         rooms = []
         num_rooms = 0
+        center_of_last_room_x = None
+        center_of_last_room_y = None
+
         for r in range(max_rooms):
             # Generate a room
             w = randint(room_min_size, room_max_size)
@@ -63,6 +74,8 @@ class GameMap:
             else:
                 self.create_room(new_room)
                 (new_x, new_y) = new_room.center()
+                center_of_last_room_x = new_x
+                center_of_last_room_y = new_y
 
                 # If this is the first room, start the player there.
                 if num_rooms == 0:
@@ -86,6 +99,11 @@ class GameMap:
                 # Add room to list
                 rooms.append(new_room)
                 num_rooms += 1
+
+        stairs_component = Stairs(self.dungeon_level + 1)
+        down_stairs = Entity(center_of_last_room_x, center_of_last_room_y, '>', libtcod.white, 'Stairs',
+                             render_order=RenderOrder.STAIRS, stairs=stairs_component)
+        entities.append(down_stairs)
 
     def create_room(self, room):
         """
@@ -186,3 +204,23 @@ class GameMap:
             return True
 
         return False
+
+    def next_floor(self, player, message_log, constants):
+        """
+        Prepare the next level of the dungeon
+        :param Entity player: the Player (@)
+        :param game_messages.MessageLog message_log:game message log
+        :param dict constants: Game constants
+        :return list: entities on map
+        """
+        self.dungeon_level += 1
+        entities = [player]
+        self.tiles = self.initialize_tiles(True)
+        self.make_map(constants['max_rooms'], constants['room_min_size'], constants['room_max_size'],
+                      constants['map_width'], constants['map_height'], player, entities,
+                      constants['max_monsters_per_room'], constants['max_items_per_room'])
+
+        player.fighter.heal(player.fighter.max_hp // 2)
+        message_log.add_message(Message('You take a moment to rest and recover your strength.', libtcod.violet))
+
+        return entities

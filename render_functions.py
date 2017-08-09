@@ -6,9 +6,10 @@ from menus import inventory_menu
 
 
 class RenderOrder(Enum):
-    CORPSE = 1
-    ITEM = 2
-    ACTOR = 3
+    STAIRS = 1
+    CORPSE = 2
+    ITEM = 3
+    ACTOR = 4
 
 
 def get_names_under_mouse(mouse, entities, fov_map):
@@ -82,10 +83,11 @@ def render_all(con, panel, entities, player, game_map, fov_map, fov_recompute, m
     # Draw entities in the list
     entities_in_render_order = sorted(entities, key=lambda x: x.render_order.value)
     for entity in entities_in_render_order:
-        draw_entity(con, entity, fov_map)
+        draw_entity(con, entity, fov_map, game_map)
 
     libtcod.console_blit(con, 0, 0, screen_width, screen_height, 0, 0, 0)
 
+    # Clear Player Status and Message Log
     libtcod.console_set_default_background(panel, libtcod.black)
     libtcod.console_clear(panel)
 
@@ -96,8 +98,11 @@ def render_all(con, panel, entities, player, game_map, fov_map, fov_recompute, m
         libtcod.console_print_ex(panel, message_log.x, y, libtcod.BKGND_NONE, libtcod.LEFT, message.text)
         y += 1
 
+    # Draw Player Status
     render_bar(panel, 1, 1, bar_width, 'HP', player.fighter.hp, player.fighter.max_hp,
                libtcod.light_red, libtcod.darker_red)
+    libtcod.console_print_ex(panel, 1, 3, libtcod.BKGND_NONE, libtcod.LEFT,
+                             'Dungeon level: {0}'.format(game_map.dungeon_level))
 
     libtcod.console_set_default_foreground(panel, libtcod.light_gray)
     libtcod.console_print_ex(panel, 1, 0, libtcod.BKGND_NONE, libtcod.LEFT,
@@ -105,6 +110,7 @@ def render_all(con, panel, entities, player, game_map, fov_map, fov_recompute, m
 
     libtcod.console_blit(panel, 0, 0, screen_width, panel_height, 0, 0, panel_y)
 
+    # Draw Inventory Menu
     if game_state in (GameStates.SHOW_INVENTORY, GameStates.DROP_INVENTORY):
         if game_state == GameStates.SHOW_INVENTORY:
             inventory_title = 'Press the key next to an item to use it, or Esc to cancel.\n'
@@ -125,14 +131,16 @@ def clear_all(con, entities):
         clear_entity(con, entity)
 
 
-def draw_entity(con, entity, fov_map):
+def draw_entity(con, entity, fov_map, game_map):
     """
     Draw the character that represents this object
     :param con: The console to draw on
     :param entity: Entity object to clear
     :param fov_map: The map holding Field of View information
+    :param game_map: The map holding game tiles
     """
-    if libtcod.map_is_in_fov(fov_map, entity.x, entity.y):
+    if libtcod.map_is_in_fov(fov_map, entity.x, entity.y) or (
+                entity.stairs and game_map.tiles[entity.x][entity.y].explored):
         libtcod.console_set_default_foreground(con, entity.color)
         libtcod.console_put_char(con, entity.x, entity.y, entity.char, libtcod.BKGND_NONE)
 
