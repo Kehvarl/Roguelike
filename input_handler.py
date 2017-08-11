@@ -19,6 +19,8 @@ def handle_keys(key, game_state):
         return handle_inventory_keys(key)
     elif game_state == GameStates.LEVEL_UP:
         return handle_level_up_menu(key)
+    elif game_state == GameStates.CHARACTER_SCREEN:
+        return handle_character_screen(key)
 
     return {}
 
@@ -62,6 +64,8 @@ def handle_player_turn_keys(key):
         return _move(-1, 1)
     elif key_char == 'n':
         return _move(1, 1)
+    elif key_char == 'z':
+        return {'wait': True}
 
     # Pick up items
     if key_char == 'g':
@@ -74,8 +78,12 @@ def handle_player_turn_keys(key):
         return {'drop_inventory': True}
 
     # Take Stairs
-    if key_char == '.' and key.shift:
+    elif key_char == '.' and key.shift:
         return {'take_stairs': True}
+
+    # Open Character Screen
+    elif key_char == 'c':
+        return {'show_character_screen': True}
 
     # Alt+Enter: toggle full screen
     if key.vk == libtcod.KEY_ENTER and key.lalt:
@@ -136,6 +144,11 @@ def handle_inventory_keys(key):
 
 
 def handle_main_menu(key):
+    """
+
+    :param libtcod.Key key: Keypress performed by player
+    :return dictionary: Command to perform
+    """
     key_char = chr(key.c)
 
     if key_char == 'a':
@@ -149,6 +162,11 @@ def handle_main_menu(key):
 
 
 def handle_level_up_menu(key):
+    """
+
+    :param libtcod.Key key: Keypress performed by player
+    :return dictionary: Command to perform
+    """
     if key:
         key_char = chr(key.c)
 
@@ -158,6 +176,18 @@ def handle_level_up_menu(key):
             return {'level_up': 'str'}
         elif key_char == 'c':
             return {'level_up': 'def'}
+
+    return {}
+
+
+def handle_character_screen(key):
+    """
+
+    :param libtcod.Key key: Keypress performed by player
+    :return dictionary: Command to perform
+    """
+    if key.vk == libtcod.KEY_ESCAPE:
+        return {'exit': True}
 
     return {}
 
