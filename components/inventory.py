@@ -39,6 +39,9 @@ class Inventory:
         """
         results = []
 
+        if self.owner.equipment.main_hand == item or self.owner.equipment.off_hand == item:
+            self.owner.equipment.toggle_equip(item)
+
         item.x = self.owner.x
         item.y = self.owner.y
 
@@ -60,7 +63,12 @@ class Inventory:
         item_component = item_entity.item
 
         if item_component.use_function is None:
-            results.append({'message': Message('The {0} cannot be used'.format(item_entity.name), libtcod.yellow)})
+            equipable_component = item_entity.equippable
+
+            if equipable_component:
+                results.append({'equip': item_entity})
+            else:
+                results.append({'message': Message('The {0} cannot be used'.format(item_entity.name), libtcod.yellow)})
         else:
             if item_component.targeting and not (kwargs.get('target_x') or kwargs.get('targey_t')):
                 results.append({'targeting': item_entity})
