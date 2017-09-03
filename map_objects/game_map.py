@@ -1,10 +1,8 @@
 from random import randint
 
 import libtcodpy as libtcod
-from components.ai import BasicMonster
 from components.equipable import Equippable
 from components.equipment import EquipmentSlots
-from components.fighter import Fighter
 from components.item import Item
 from components.stairs import Stairs
 from entity import Entity
@@ -12,6 +10,7 @@ from game_messages import Message
 from item_functions import heal, cast_lightning, cast_fireball, cast_confuse
 from map_objects.rectangle import Rect
 from map_objects.tile import Tile
+from map_objects.monster_factory import MonsterFactory
 from random_utils import from_dungeon_level, random_choice_from_dict
 from render_functions import RenderOrder
 
@@ -148,8 +147,6 @@ class GameMap:
         number_of_monsters = randint(0, max_monsters_per_room)
         number_of_items = randint(0, max_items_per_room)
 
-        monster_chances = {'orc': 80,
-                           'troll': from_dungeon_level([[15, 3], [30, 5], [60, 7]], self.dungeon_level)}
         item_chances = {'healing_potion': 35,
                         'sword': from_dungeon_level([[5, 4]], self.dungeon_level),
                         'shield': from_dungeon_level([[15, 8]], self.dungeon_level),
@@ -160,23 +157,7 @@ class GameMap:
         for i in range(number_of_monsters):
             x = randint(room.x1 + 1, room.x2 - 1)
             y = randint(room.y1 + 1, room.y2 - 1)
-
-            if not any([entity for entity in entities if entity.x == x and entity.y == y]):
-                monster_choice = random_choice_from_dict(monster_chances)
-
-                if monster_choice == 'orc':
-                    fighter_component = Fighter(hp=20, defense=0, power=4, xp=35)
-                    ai_component = BasicMonster()
-                    monster = Entity(x, y, 'o', libtcod.desaturated_green, 'Orc', blocks=True,
-                                     render_order=RenderOrder.ACTOR, fighter=fighter_component, ai=ai_component)
-
-                else:
-                    fighter_component = Fighter(hp=30, defense=2, power=8, xp=100)
-                    ai_component = BasicMonster()
-                    monster = Entity(x, y, 'T', libtcod.darker_green, 'Troll', blocks=True,
-                                     render_order=RenderOrder.ACTOR, fighter=fighter_component, ai=ai_component)
-
-                entities.append(monster)
+            entities.append(MonsterFactory.get_monster(entities, self.dungeon_level, x, y))
 
         for i in range(number_of_items):
             x = randint(room.x1 + 1, room.x2 - 1)
