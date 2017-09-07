@@ -141,7 +141,7 @@ class GameMap:
         :param room: The room rectangle to add monsters
         :param entities: A list of monsters and their locations in the map
         """
-        max_monsters_per_room = from_dungeon_level([[2, 1], [3, 4], [5, 6]], self.dungeon_level)
+        max_monsters_per_room = from_dungeon_level([[4, 1], [7, 4], [10, 6]], self.dungeon_level)
         max_items_per_room = from_dungeon_level([[1, 1], [2, 4]], self.dungeon_level)
 
         number_of_monsters = randint(0, max_monsters_per_room)
@@ -154,10 +154,14 @@ class GameMap:
                         'fireball_scroll': from_dungeon_level([[25, 6]], self.dungeon_level),
                         'confusion_scroll': from_dungeon_level([[10, 2]], self.dungeon_level)}
 
-        for i in range(number_of_monsters):
+        monster_count = 0
+        while monster_count < number_of_monsters:
             x = randint(room.x1 + 1, room.x2 - 1)
             y = randint(room.y1 + 1, room.y2 - 1)
-            entities.append(MonsterFactory.get_monster(entities, self.dungeon_level, x, y))
+            monster = MonsterFactory.get_monster(entities, self.dungeon_level, x, y)
+            if monster_count + monster.monster_value <= number_of_monsters:
+                entities.append(monster)
+                monster_count += monster.monster_value
 
         for i in range(number_of_items):
             x = randint(room.x1 + 1, room.x2 - 1)

@@ -11,7 +11,7 @@ class Entity:
     """
 
     def __init__(self, x, y, char, color, name, blocks=False, render_order=RenderOrder.CORPSE, fighter=None, ai=None,
-                 item=None, inventory=None, stairs=None, level=None, equipment=None, equippable=None):
+                 monster_value=0, item=None, inventory=None, stairs=None, level=None, equipment=None, equippable=None):
         self.x = x
         self.y = y
         self.char = char
@@ -21,6 +21,7 @@ class Entity:
         self.render_order = render_order
         self.fighter = fighter
         self.ai = ai
+        self.monster_value = monster_value
         self.item = item
         self.inventory = inventory
         self.stairs = stairs
