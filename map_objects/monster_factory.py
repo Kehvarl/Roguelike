@@ -9,36 +9,7 @@ from render_functions import RenderOrder
 
 class MonsterFactory:
     @staticmethod
-    def get_monster(entities, dungeon_level, x, y):
-        monster_dict = {
-            'kobold': {'name': 'Kobold',
-                       'symbol': 'k',
-                       'color': libtcod.dark_flame,
-                       'ai': 'basic',
-                       'hp': 10,
-                       'defense': 0,
-                       'power': 2,
-                       'xp': 20,
-                       'monster_value': 1},
-            'orc': {'name': 'Orc',
-                    'symbol': 'o',
-                    'color': libtcod.desaturated_green,
-                    'ai': 'basic',
-                    'hp': 20,
-                    'defense': 0,
-                    'power': 4,
-                    'xp': 35,
-                    'monster_value': 2},
-            'troll': {'name': 'Troll',
-                      'symbol': 'T',
-                      'color': libtcod.darker_green,
-                      'ai': 'basic',
-                      'hp': 30,
-                      'defense': 2,
-                      'power': 8,
-                      'xp': 100,
-                      'monster_value': 5}
-        }
+    def get_monster(monster_dict, entities, dungeon_level, x, y):
 
         monster_chances = {'kobold': 75,
                            'orc': from_dungeon_level([[25, 1], [45, 3], [65, 5]], dungeon_level),
@@ -50,12 +21,13 @@ class MonsterFactory:
                                         defense=monster_choice['defense'],
                                         power=monster_choice['power'],
                                         xp=monster_choice['xp'])
+            color = getattr(libtcod, monster_choice['color'], libtcod.white)
             if monster_choice['ai'] == 'basic':
                 ai_component = BasicMonster()
             else:
                 ai_component = BasicMonster()
             monster = Entity(x, y, monster_choice['symbol'],
-                             monster_choice['color'],
+                             color,
                              monster_choice['name'],
                              monster_value=monster_choice['monster_value'],
                              blocks=True, render_order=RenderOrder.ACTOR,

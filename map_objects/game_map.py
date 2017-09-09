@@ -22,16 +22,18 @@ class GameMap:
     Performs random map generation
     """
 
-    def __init__(self, width, height, dungeon_level=1):
+    def __init__(self, width, height, monster_dict, dungeon_level=1):
         """
         Create a new Game Map
         :param width: Width of map in tiles
         :param height: Height of map in tiles
+        :param monster_dict:
         :param dungeon_level:
         """
         self.width = width
         self.height = height
         self.tiles = self.initialize_tiles()
+        self.monster_dict = monster_dict
         self.dungeon_level = dungeon_level
 
     # noinspection PyUnusedLocal
@@ -158,7 +160,7 @@ class GameMap:
         while monster_count < number_of_monsters:
             x = randint(room.x1 + 1, room.x2 - 1)
             y = randint(room.y1 + 1, room.y2 - 1)
-            monster = MonsterFactory.get_monster(entities, self.dungeon_level, x, y)
+            monster = MonsterFactory.get_monster(self.monster_dict, entities, self.dungeon_level, x, y)
             if monster_count + monster.monster_value <= number_of_monsters:
                 entities.append(monster)
                 monster_count += monster.monster_value
