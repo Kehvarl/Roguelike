@@ -54,6 +54,10 @@ def get_constants():
     with open('settings/monsters.json') as json_data:
         monster_dict = json.load(json_data)
 
+    # Load Items from file
+    with open('settings/items.json') as json_data:
+        item_dict = json.load(json_data)
+
     # Convert settings to passable dictionary
     constants = {
         'window_title': window_title,
@@ -74,7 +78,8 @@ def get_constants():
         'fov_light_walls': fov_light_walls,
         'fov_radius': fov_radius,
         'colors': colors,
-        'monster_dict': monster_dict
+        'monster_dict': monster_dict,
+        'item_dict': item_dict
     }
 
     return constants
@@ -100,7 +105,8 @@ def get_game_variables(constants):
     player.equipment.toggle_equip(dagger)
 
     # Generate Game Map
-    game_map = GameMap(constants['map_width'], constants['map_height'], constants['monster_dict'])
+    game_map = GameMap(constants['map_width'], constants['map_height'],
+                       constants['monster_dict'], constants['item_dict'])
     game_map.make_map(constants['max_rooms'], constants['room_min_size'], constants['room_max_size'],
                       constants['map_width'], constants['map_height'], player, entities)
 

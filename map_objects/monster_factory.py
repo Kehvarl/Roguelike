@@ -25,7 +25,7 @@ class MonsterFactory:
             monster = Entity(x, y, monster_choice['symbol'],
                              color,
                              monster_choice['name'],
-                             monster_value=monster_choice['monster_value'],
+                             count_value=monster_choice['monster_value'],
                              blocks=True, render_order=RenderOrder.ACTOR,
                              fighter=fighter_component, ai=ai_component)
 

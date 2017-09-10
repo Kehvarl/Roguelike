@@ -11,7 +11,7 @@ class Entity:
     """
 
     def __init__(self, x, y, char, color, name, blocks=False, render_order=RenderOrder.CORPSE, fighter=None, ai=None,
-                 monster_value=0, item=None, inventory=None, stairs=None, level=None, equipment=None, equippable=None):
+                 count_value=0, item=None, inventory=None, stairs=None, level=None, equipment=None, equippable=None):
         self.x = x
         self.y = y
         self.char = char
@@ -21,7 +21,7 @@ class Entity:
         self.render_order = render_order
         self.fighter = fighter
         self.ai = ai
-        self.monster_value = monster_value
+        self.count_value = count_value
         self.item = item
         self.inventory = inventory
         self.stairs = stairs
@@ -74,7 +74,7 @@ class Entity:
         dy = int(round(dy / distance))
 
         if not (game_map.is_blocked(self.x + dx, self.y + dy) or
-                    get_blocking_entities_at_location(entities, self.x + dx, self.y + dy)):
+                get_blocking_entities_at_location(entities, self.x + dx, self.y + dy)):
             self.move(dx, dy)
 
     def move_astar(self, target, entities, game_map):

@@ -1,0 +1,75 @@
+{
+  "healing_potion": {
+    "name": "Healing Potion",
+    "symbol": "!",
+    "color": "violet",
+    "item": true,
+    "item_use_parameters": {
+      "function": "heal",
+      "amount": 40
+    },
+    "likelihood": [[30, 1]]
+  },
+  "sword": {
+    "name": "Sword",
+    "symbol": "/",
+    "color": "sky",
+    "equippable": true,
+    "equippable_parameters": {
+      "slot": "main_hand",
+      "power_bonus": 3
+    },
+    "likelihood": [[15, 4]]
+  },
+  "shield": {
+    "name": "Shield",
+    "symbol": "[",
+    "color": "darker_orange",
+    "equippable": true,
+    "equippable_parameters": {
+      "slot": "off_hand",
+      "defense_bonus": 3
+    },
+    "likelihood": [[15, 8]]
+  },
+  "fireball_scroll": {
+    "name": "Scroll of Fireball",
+    "symbol": "#",
+    "color": "red",
+    "item": true,
+    "item_use_parameters": {
+      "function": "cast_fireball",
+      "targeting": true,
+      "message": "Left-click a target tile for the fireball, or right-click to cancel.",
+      "message_color": "light_cyan",
+      "damage": 25,
+      "radius": 3
+    },
+    "likelihood": [[25, 6]]
+  },
+  "confusion_scroll": {
+    "name": "Scroll of Confusion",
+    "symbol": "#",
+    "color": "light_pink",
+    "item": true,
+    "item_use_parameters": {
+      "function": "cast_confuse",
+      "targeting": true,
+      "message": "Left-click an enemy to confuse it, or right-click to cancel.",
+      "message_color": "light_cyan"
+    },
+    "likelihood": [[10, 2]]
+  },
+  "lightning_scroll": {
+    "name": "Scroll of Lightning Bolt",
+    "symbol": "#",
+    "color": "yellow",
+    "item": true,
+    "item_use_parameters": {
+      "function": "cast_lightning",
+      "damage": 60,
+      "range": 5
+    },
+    "likelihood": [[25, 4]]
+  }
+}
