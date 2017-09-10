@@ -3,17 +3,13 @@ import libtcodpy as libtcod
 from entity import Entity
 from components.ai import BasicMonster
 from components.fighter import Fighter
-from random_utils import from_dungeon_level, random_choice_from_dict
+from random_utils import random_choice_from_dict
 from render_functions import RenderOrder
 
 
 class MonsterFactory:
     @staticmethod
-    def get_monster(monster_dict, entities, dungeon_level, x, y):
-
-        monster_chances = {'kobold': 75,
-                           'orc': from_dungeon_level([[25, 1], [45, 3], [65, 5]], dungeon_level),
-                           'troll': from_dungeon_level([[15, 3], [30, 5], [60, 7]], dungeon_level)}
+    def get_monster(monster_dict, monster_chances, entities, x, y):
 
         if not any([entity for entity in entities if entity.x == x and entity.y == y]):
             monster_choice = monster_dict[random_choice_from_dict(monster_chances)]
@@ -32,4 +28,5 @@ class MonsterFactory:
                              monster_value=monster_choice['monster_value'],
                              blocks=True, render_order=RenderOrder.ACTOR,
                              fighter=fighter_component, ai=ai_component)
+
             return monster

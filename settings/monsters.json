@@ -8,7 +8,8 @@
     "defense": 0,
     "power": 2,
     "xp": 20,
-    "monster_value": 1
+    "monster_value": 1,
+    "likelihood": [[75, 1], [45, 3], [15, 5], [0, 7]]
   },
   "orc": {
     "name": "Orc",
@@ -19,7 +20,8 @@
     "defense": 0,
     "power": 4,
     "xp": 35,
-    "monster_value": 2
+    "monster_value": 2,
+    "likelihood": [[25, 1], [45, 3], [65, 5], [45, 7], [15, 9]]
   },
   "troll": {
     "name": "Troll",
@@ -30,6 +32,7 @@
     "defense": 2,
     "power": 8,
     "xp": 100,
-    "monster_value": 5
+    "monster_value": 5,
+    "likelihood": [[15, 3], [30, 5], [60, 7]]
   }
 }

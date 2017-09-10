@@ -36,6 +36,10 @@ class GameMap:
         self.monster_dict = monster_dict
         self.dungeon_level = dungeon_level
 
+        self.monster_chances = {}
+        for key, settings in monster_dict.items():
+            self.monster_chances[key] = from_dungeon_level(settings['likelihood'], dungeon_level)
+
     # noinspection PyUnusedLocal
     def initialize_tiles(self, default_block=True):
         tiles = [[Tile(default_block) for y in range(self.height)] for x in range(self.width)]
@@ -52,8 +56,6 @@ class GameMap:
         :param int map_height:
         :param Entity player:
         :param list entities:
-        :param int max_monsters_per_room:
-        :param int max_items_per_room:
         """
 
         rooms = []
@@ -79,9 +81,11 @@ class GameMap:
                 (new_x, new_y) = new_room.center()
                 center_of_last_room_x = new_x
                 center_of_last_room_y = new_y
+                is_first_room = False
 
                 # If this is the first room, start the player there.
                 if num_rooms == 0:
+                    is_first_room = True
                     player.x = new_x
                     player.y = new_y
                 else:
@@ -98,7 +102,7 @@ class GameMap:
                         self.create_v_tunnel(prev_y, new_y, prev_x)
                         self.create_h_tunnel(prev_x, new_x, new_y)
 
-                self.place_entities(new_room, entities)
+                self.place_entities(new_room, entities, is_first_room)
                 # Add room to list
                 rooms.append(new_room)
                 num_rooms += 1
@@ -137,11 +141,12 @@ class GameMap:
         for y in range(min(y1, y2), max(y1, y2) + 1):
             self.tiles[x][y].block(False)
 
-    def place_entities(self, room, entities):
+    def place_entities(self, room, entities, is_first_room):
         """
         Set some random monsters in this room
         :param room: The room rectangle to add monsters
         :param entities: A list of monsters and their locations in the map
+        :param is_first_room: Is this the first room in the maze.
         """
         max_monsters_per_room = from_dungeon_level([[4, 1], [7, 4], [10, 6]], self.dungeon_level)
         max_items_per_room = from_dungeon_level([[1, 1], [2, 4]], self.dungeon_level)
@@ -156,14 +161,16 @@ class GameMap:
                         'fireball_scroll': from_dungeon_level([[25, 6]], self.dungeon_level),
                         'confusion_scroll': from_dungeon_level([[10, 2]], self.dungeon_level)}
 
-        monster_count = 0
-        while monster_count < number_of_monsters:
-            x = randint(room.x1 + 1, room.x2 - 1)
-            y = randint(room.y1 + 1, room.y2 - 1)
-            monster = MonsterFactory.get_monster(self.monster_dict, entities, self.dungeon_level, x, y)
-            if monster_count + monster.monster_value <= number_of_monsters:
-                entities.append(monster)
-                monster_count += monster.monster_value
+        if not is_first_room:
+            monster_count = 0
+            while monster_count < number_of_monsters:
+                x = randint(room.x1 + 1, room.x2 - 1)
+                y = randint(room.y1 + 1, room.y2 - 1)
+                monster = MonsterFactory.get_monster(self.monster_dict, self.monster_chances,
+                                                     entities, x, y)
+                if monster and monster_count + monster.monster_value <= number_of_monsters:
+                    entities.append(monster)
+                    monster_count += monster.monster_value
 
         for i in range(number_of_items):
             x = randint(room.x1 + 1, room.x2 - 1)
