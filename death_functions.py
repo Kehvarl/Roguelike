@@ -1,4 +1,5 @@
 import libtcodpy as libtcod
+from entity import Entity
 from game_messages import Message
 from game_states import GameStates
 from render_functions import RenderOrder
@@ -12,6 +13,11 @@ def kill_player(player):
 
 
 def kill_monster(monster):
+    """
+    The Death of a Monster
+    :param Entity monster: the monster being killed
+    :return Message: Notification of Killed Monster
+    """
     death_message = Message('{0} is dead!'.format(monster.name.capitalize()), libtcod.orange)
 
     monster.char = '%'

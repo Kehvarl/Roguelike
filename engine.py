@@ -1,6 +1,7 @@
 import libtcodpy as libtcod
+from components.item import Item
 from death_functions import kill_monster, kill_player
-from entity import get_blocking_entities_at_location
+from entity import get_blocking_entities_at_location, Entity
 from fov_functions import initialize_fov, recompute_fov
 from game_messages import Message
 from game_states import GameStates
@@ -8,7 +9,7 @@ from input_handler import handle_keys, handle_mouse, handle_main_menu
 from loader_functions.data_loaders import load_game, save_game
 from loader_functions.initialize_new_game import get_constants, get_game_variables
 from menus import main_menu, message_box
-from render_functions import clear_all, render_all
+from render_functions import clear_all, render_all, RenderOrder
 
 
 def main():
@@ -237,6 +238,12 @@ def play_game(player, entities, game_map, message_log, game_state, con, panel, c
                 if dead_entity == player:
                     message, game_state = kill_player(dead_entity)
                 else:
+                    # TODO: Is this the best place for this?
+                    item_component = Item(is_treasure=True)
+                    treasure = Entity(dead_entity.x, dead_entity.y, '$', libtcod.silver, 'Treasure', blocks=False,
+                                      treasure_value=dead_entity.treasure_value,
+                                      render_order=RenderOrder.ITEM, item=item_component)
+                    entities.append(treasure)
                     message = kill_monster(dead_entity)
                 message_log.add_message(message)
 

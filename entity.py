@@ -10,8 +10,13 @@ class Entity:
     A generic object to represent players, enemies, items, etc.
     """
 
-    def __init__(self, x, y, char, color, name, blocks=False, render_order=RenderOrder.CORPSE, fighter=None, ai=None,
-                 count_value=0, item=None, inventory=None, stairs=None, level=None, equipment=None, equippable=None):
+    def __init__(self, x, y, char, color, name, blocks=False,
+                 render_order=RenderOrder.CORPSE,
+                 fighter=None, ai=None,
+                 item=None, inventory=None,
+                 equipment=None, equippable=None,
+                 count_value=0, treasure_value=0,
+                 stairs=None, level=None, ):
         self.x = x
         self.y = y
         self.char = char
@@ -22,6 +27,7 @@ class Entity:
         self.fighter = fighter
         self.ai = ai
         self.count_value = count_value
+        self.treasure_value = treasure_value
         self.item = item
         self.inventory = inventory
         self.stairs = stairs
@@ -67,6 +73,13 @@ class Entity:
         self.y += dy
 
     def move_towards(self, target_x, target_y, game_map, entities):
+        """
+        Move this entity towards a target in a straight line unless blocked
+        :param int target_x: Coordinate to move towards
+        :param int target_y: Coordinate to move towards
+        :param game_map.GameMap game_map: The map being moved through
+        :param list entities: List of things and creatures on the map
+        """
         dx = target_x - self.x
         dy = target_y - self.y
         distance = math.sqrt(dx ** 2 + dy ** 2)
@@ -79,10 +92,10 @@ class Entity:
 
     def move_astar(self, target, entities, game_map):
         """
-        :param Entity target:
-        :param List entities:
-        :param game_map.GameMap game_map:
-        :return:
+        Move this entity towards a target.
+        :param Entity target: The thing or creature to move towards
+        :param list entities: List of things and creatures on the map
+        :param game_map.GameMap game_map: The map being moved through
         """
         # Create a FOV map that has the dimensions of the map
         fov = libtcod.map_new(game_map.width, game_map.height)
@@ -130,15 +143,33 @@ class Entity:
         libtcod.path_delete(my_path)
 
     def distance_to(self, other):
+        """
+        Calculate the straight-line distance between this Entity and another Entity
+        :param Entity other:
+        :return int: The distance in tiles
+        """
         dx = other.x - self.x
         dy = other.y - self.y
         return math.sqrt(dx ** 2 + dy ** 2)
 
     def distance(self, x, y):
+        """
+        Calculate the straight-line distance between this entity and a tile on the map
+        :param int x: Coordinate of target
+        :param int y: Coordinate of target
+        :return int: The distance in tiles
+        """
         return math.sqrt((x - self.x) ** 2 + (y - self.y) ** 2)
 
 
 def get_blocking_entities_at_location(entities, destination_x, destination_y):
+    """
+    Return the first Entity which blocks movement at a given x,y coordinate.
+    :param list entities: List of things and creatures on the map
+    :param int destination_x:
+    :param int destination_y:
+    :return Entity:
+    """
     for entity in entities:
         if entity.blocks and entity.x == destination_x and entity.y == destination_y:
             return entity
