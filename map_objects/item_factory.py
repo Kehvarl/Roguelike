@@ -1,9 +1,8 @@
 import libtcodpy as libtcod
-
-from entity import Entity
 from components.equipable import Equippable
 from components.equipment import EquipmentSlots
 from components.item import Item
+from entity import Entity
 from game_messages import Message
 from item_functions import heal, cast_lightning, cast_fireball, cast_confuse
 from random_utils import random_choice_from_dict
@@ -30,23 +29,26 @@ class ItemFactory:
             item_component = None
             equippable_component = None
             targeting_message = None
+            treasure_value = item_choice.get('treasure_value', 0)
 
             if item_choice.get('item'):
-                use_function = use_functions.get(item_choice['item_use_parameters'].get('function'))
-                amount = item_choice['item_use_parameters'].get('amount')
-                targeting = item_choice['item_use_parameters'].get('targeting')
-                message = item_choice['item_use_parameters'].get('message')
+                use_function = use_functions.get(item_choice['item_parameters'].get('function'))
+                amount = item_choice['item_parameters'].get('amount')
+                targeting = item_choice['item_parameters'].get('targeting')
+                is_treasure = item_choice['item_parameters'].get('is_treasure', False)
+                message = item_choice['item_parameters'].get('message')
                 if message:
                     message = Message(message,
-                                      item_choice['item_use_parameters'].get('message_color'))
+                                      item_choice['item_parameters'].get('message_color'))
                 if targeting:
                     targeting_message = message
-                damage = item_choice['item_use_parameters'].get('damage')
-                radius = item_choice['item_use_parameters'].get('radius')
-                effect_range = item_choice['item_use_parameters'].get('range')
+                damage = item_choice['item_parameters'].get('damage')
+                radius = item_choice['item_parameters'].get('radius')
+                effect_range = item_choice['item_parameters'].get('range')
 
                 item_component = Item(use_function=use_function,
                                       amount=amount,
+                                      is_treasure=is_treasure,
                                       targeting=targeting,
                                       targeting_message=targeting_message,
                                       damage=damage,
@@ -66,5 +68,6 @@ class ItemFactory:
                           render_order=RenderOrder.ITEM,
                           item=item_component,
                           count_value=1,
+                          treasure_value=treasure_value,
                           equippable=equippable_component)
             return item

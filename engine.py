@@ -240,8 +240,8 @@ def play_game(player, entities, game_map, message_log, game_state, con, panel, c
                 else:
                     # TODO: Is this the best place for this?
                     item_component = Item(is_treasure=True)
-                    treasure = Entity(dead_entity.x, dead_entity.y, '$', libtcod.silver, 'Treasure', blocks=False,
-                                      treasure_value=dead_entity.treasure_value,
+                    treasure = Entity(dead_entity.x, dead_entity.y, '$', libtcod.silver, 'Dropped Treasure',
+                                      blocks=False, treasure_value=dead_entity.treasure_value,
                                       render_order=RenderOrder.ITEM, item=item_component)
                     entities.append(treasure)
                     message = kill_monster(dead_entity)

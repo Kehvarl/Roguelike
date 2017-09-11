@@ -4,7 +4,7 @@
     "symbol": "!",
     "color": "violet",
     "item": true,
-    "item_use_parameters": {
+    "item_parameters": {
       "function": "heal",
       "amount": 40
     },
@@ -37,7 +37,7 @@
     "symbol": "#",
     "color": "red",
     "item": true,
-    "item_use_parameters": {
+    "item_parameters": {
       "function": "cast_fireball",
       "targeting": true,
       "message": "Left-click a target tile for the fireball, or right-click to cancel.",
@@ -52,7 +52,7 @@
     "symbol": "#",
     "color": "light_pink",
     "item": true,
-    "item_use_parameters": {
+    "item_parameters": {
       "function": "cast_confuse",
       "targeting": true,
       "message": "Left-click an enemy to confuse it, or right-click to cancel.",
@@ -65,11 +65,22 @@
     "symbol": "#",
     "color": "yellow",
     "item": true,
-    "item_use_parameters": {
+    "item_parameters": {
       "function": "cast_lightning",
       "damage": 60,
       "range": 5
     },
     "likelihood": [[25, 4]]
+  },
+  "treasure_pile": {
+    "name": "Pile of Treasure",
+    "symbol": "$",
+    "color": "silver",
+    "item": true,
+    "item_parameters": {
+      "is_treasure": true
+    },
+    "treasure_value": 5,
+    "likelihood": [[5, 1]]
   }
 }
