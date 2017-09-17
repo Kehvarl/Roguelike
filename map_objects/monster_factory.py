@@ -42,7 +42,8 @@ class MonsterFactory:
                                     power=monster_choice['power'],
                                     xp=monster_choice['xp'])
         color = getattr(libtcod, monster_choice['color'], libtcod.white)
-        ai_component = MonsterFactory.monster_ai[monster_choice.get('ai')]()
+        ai_component = MonsterFactory.monster_ai[monster_choice.get('ai')](monster_choice.get('ai_action', False),
+                                                                           monster_choice.get('action_radius', 10))
         monster = Entity(x, y, monster_choice['symbol'],
                          color,
                          monster_choice['name'],
@@ -56,6 +57,7 @@ class MonsterFactory:
     @staticmethod
     def build_monster(x, y, monster_symbol='m', monster_color='white',
                       monster_name='generic_monster', monster_ai='basic',
+                      ai_action=True, ai_action_radius=10,
                       fighter_hp=1, fighter_defense=0, fighter_power=0, fighter_xp=0,
                       treasure_value=0, count_value=0):
         """
@@ -66,6 +68,8 @@ class MonsterFactory:
         :param str monster_color: Color for monster icon
         :param str monster_name: Display Name for monster
         :param str monster_ai: Default AI to use for this monster
+        :param int ai_action: Allow Monster to act outside of FOV
+        :param int ai_action_radius: Monster will act within this range of the Player
         :param int fighter_hp: Starting Hit Points
         :param int fighter_defense: Defense Combat Value
         :param int fighter_power: Attack Combat Value
@@ -79,7 +83,7 @@ class MonsterFactory:
                                     power=fighter_power,
                                     xp=fighter_xp)
         color = getattr(libtcod, monster_color, libtcod.white)
-        ai_component = MonsterFactory.monster_ai[monster_ai]()
+        ai_component = MonsterFactory.monster_ai[monster_ai](ai_action, ai_action_radius)
         monster = Entity(x, y, monster_symbol,
                          color,
                          monster_name,

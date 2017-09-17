@@ -5,6 +5,14 @@ from game_messages import Message
 
 
 class BasicMonster:
+    def __init__(self, activity=True, activity_radius=10):
+        """
+        :param activity: Allow Monster Activity outside of FOV
+        :param activity_radius: Monster Activity within N tiles of Player
+        """
+        self.activity = activity
+        self.activity_radius = activity_radius
+
     def take_turn(self, target, fov_map, game_map, entities):
         """
         Perform the AI actions on its turn
@@ -23,10 +31,15 @@ class BasicMonster:
             elif target.fighter.hp > 0:
                 attack_results = monster.fighter.attack(target)
                 results.extend(attack_results)
+        elif self.activity and monster.distance_to(target) <= self.activity_radius:
+            random_x = self.owner.x + randint(0, 2) - 1
+            random_y = self.owner.y + randint(0, 2) - 1
+            monster.move_towards(random_x, random_y, game_map, entities)
 
         return results
 
 
+# noinspection PyUnusedLocal
 class ConfusedMonster:
     def __init__(self, previous_ai, number_of_turns=10):
         self.previous_ai = previous_ai
