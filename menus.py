@@ -2,6 +2,15 @@ import libtcodpy as libtcod
 
 
 def menu(con, header, options, width, screen_width, screen_height):
+    """
+    Draw a Menu
+    :param libtcod.console con: Console to draw menu on
+    :param header:
+    :param list options: Items to show in Menu
+    :param int width: Width of menu in tiles
+    :param int screen_width: Screen size
+    :param int screen_height: Screen size
+    """
     if len(options) > 26:
         raise ValueError('Cannot have a menu with more than 26 options.')
 
@@ -32,7 +41,16 @@ def menu(con, header, options, width, screen_width, screen_height):
 
 
 def inventory_menu(con, header, player, inventory_width, screen_width, screen_height):
-    # show a menu with each item of the inventory as ana option
+    """
+    Draw a menu displaying inventory contents
+    :param libtcod.console con: Console to draw menu on
+    :param header:
+    :param Entity player: Entity with Inventory to display
+    :param int inventory_width: Width of the Inventory Menu in tiles
+    :param int screen_width: Screen size
+    :param int screen_height: Screen size
+    """
+    # show a menu with each item of the inventory as an option
     if len(player.inventory.items) == 0:
         options = ['Inventory is empty.']
     else:
@@ -48,19 +66,49 @@ def inventory_menu(con, header, player, inventory_width, screen_width, screen_he
     menu(con, header, options, inventory_width, screen_width, screen_height)
 
 
-def main_menu(con, background_image, screen_width, screen_height):
+def main_menu(con, screen_width, screen_height, background_image,
+              title='TOMBS OF THE ANCIENT KINGS',
+              author='Kehvar;',
+              option_new='Play a new game',
+              option_continue='Continue last game',
+              option_quit='Quit',
+              additional_options=None):
+    """
+    Display Main Menu to begin game
+    :param libtcod.console con: Console to draw menu on
+    :param int screen_width: Screen size
+    :param int screen_height: Screen size
+    :param background_image: Image to Display
+    :param str title: Game Title text to display
+    :param str author: Name to display for the author
+    :param str option_new: Text for New Game option
+    :param str option_continue: Text for Continue option
+    :param str option_quit: Text for Quit option
+    :param list additional_options: Other Main-Menu options to display
+    """
     libtcod.image_blit_2x(background_image, 0, 0, 0)
 
     libtcod.console_set_default_foreground(0, libtcod.yellow)
     libtcod.console_print_ex(0, int(screen_width / 2), int(screen_height / 2) - 4, libtcod.BKGND_NONE, libtcod.CENTER,
-                             'TOMBS OF THE ANCIENT KINGS')
+                             title)
     libtcod.console_print_ex(0, int(screen_width / 2), int(screen_height - 2), libtcod.BKGND_NONE, libtcod.CENTER,
-                             'By: Kehvarl')
+                             'By: '+author)
 
-    menu(con, '', ['Play a new game', 'Continue last game', 'Quit'], 24, screen_width, screen_height)
+    options = [option_new, option_continue, option_quit]
+    options.extend(additional_options)
+    menu(con, '', options, 24, screen_width, screen_height)
 
 
 def level_up_menu(con, header, player, menu_width, screen_width, screen_height):
+    """
+    Draw the level-up menu for the Player
+    :param libtcod.console con: Console to draw menu on
+    :param header:
+    :param Entity player: The Entity in the process of levelling up
+    :param int menu_width:  Width of the Level-Up Menu in tiles
+    :param int screen_width: Screen size
+    :param int screen_height: Screen size
+    """
     options = ['Constitution (+20 HP from {0})'.format(player.fighter.max_hp),
                'Strength (+1 attach from {0}'.format(player.fighter.power),
                'Agility (+1 defense from {0}'.format(player.fighter.defense)]
@@ -68,6 +116,14 @@ def level_up_menu(con, header, player, menu_width, screen_width, screen_height):
 
 
 def character_screen(player, character_screen_width, character_screen_height, screen_width, screen_height):
+    """
+    Draw the Player Info Screen with player details
+    :param Entity player: The Entity in the process of levelling up
+    :param character_screen_width:  Width of the Player Info Screen in tiles
+    :param character_screen_height:  Height of the Player Info Screen in tiles
+    :param int screen_width: Screen size
+    :param int screen_height: Screen size
+    """
     window = libtcod.console_new(character_screen_width, character_screen_height)
 
     libtcod.console_set_default_foreground(window, libtcod.white)
@@ -94,4 +150,12 @@ def character_screen(player, character_screen_width, character_screen_height, sc
 
 
 def message_box(con, header, width, screen_width, screen_height):
+    """
+    Draw a message box (empty region with no content) to the screen.
+    :param libtcod.console con: Console to draw menu on
+    :param header:
+    :param int width:  Width of the Message Box in tiles
+    :param int screen_width: Screen size
+    :param int screen_height: Screen size
+    """
     menu(con, header, [], width, screen_width, screen_height)
