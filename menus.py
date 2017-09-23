@@ -72,7 +72,7 @@ def main_menu(con, screen_width, screen_height, background_image,
               option_new='Play a new game',
               option_continue='Continue last game',
               option_quit='Quit',
-              additional_options=[]):
+              additional_options=None):
     """
     Display Main Menu to begin game
     :param libtcod.console con: Console to draw menu on
@@ -94,6 +94,8 @@ def main_menu(con, screen_width, screen_height, background_image,
     libtcod.console_print_ex(0, int(screen_width / 2), int(screen_height - 2), libtcod.BKGND_NONE, libtcod.CENTER,
                              'By: '+author)
 
+    if additional_options is None:
+        additional_options = []
     options = [option_new, option_continue, option_quit]
     options.extend(additional_options)
     menu(con, '', options, 24, screen_width, screen_height)
