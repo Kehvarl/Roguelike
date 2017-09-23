@@ -1,13 +1,13 @@
 import libtcodpy as libtcod
 from components.item import Item
 from death_functions import kill_monster, kill_player
-from entity import get_blocking_entities_at_location, Entity
 from fov_functions import initialize_fov, recompute_fov
 from game_messages import Message
 from game_states import GameStates
 from input_handler import handle_keys, handle_mouse, handle_main_menu
 from loader_functions.data_loaders import load_game, save_game
 from loader_functions.initialize_new_game import get_constants, get_game_variables
+from map_objects.entity import get_blocking_entities_at_location, Entity
 from menus import main_menu, message_box
 from render_functions import clear_all, render_all, RenderOrder
 
@@ -40,8 +40,8 @@ def main():
         libtcod.sys_check_for_event(libtcod.EVENT_KEY_PRESS | libtcod.EVENT_MOUSE, key, mouse)
 
         if show_main_menu:
-            main_menu(con, main_menu_background_image, constants['screen_width'],
-                      constants['screen_height'])
+            main_menu(con, constants['screen_width'], constants['screen_height'],
+                      main_menu_background_image)
 
             if show_load_error_message:
                 message_box(con, 'No save game to load', 50, constants['screen_width'], constants['screen_height'])

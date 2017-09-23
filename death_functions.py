@@ -1,7 +1,7 @@
 import libtcodpy as libtcod
-from entity import Entity
 from game_messages import Message
 from game_states import GameStates
+from map_objects.entity import Entity
 from render_functions import RenderOrder
 
 

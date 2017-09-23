@@ -1,7 +1,7 @@
 import libtcodpy as libtcod
 from components.ai import BasicMonster
 from components.fighter import Fighter
-from entity import Entity
+from map_objects.entity import Entity
 from random_utils import random_choice_from_dict
 from render_functions import RenderOrder
 

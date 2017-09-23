@@ -2,12 +2,12 @@ from random import randint
 
 import libtcodpy as libtcod
 from components.stairs import Stairs
-from entity import Entity
 from game_messages import Message
+from map_objects.entity import Entity
+from map_objects.item_factory import ItemFactory
+from map_objects.monster_factory import MonsterFactory
 from map_objects.rectangle import Rect
 from map_objects.tile import Tile
-from map_objects.monster_factory import MonsterFactory
-from map_objects.item_factory import ItemFactory
 from random_utils import from_dungeon_level
 from render_functions import RenderOrder
 

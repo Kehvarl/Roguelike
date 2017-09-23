@@ -72,7 +72,7 @@ def main_menu(con, screen_width, screen_height, background_image,
               option_new='Play a new game',
               option_continue='Continue last game',
               option_quit='Quit',
-              additional_options=None):
+              additional_options=[]):
     """
     Display Main Menu to begin game
     :param libtcod.console con: Console to draw menu on

@@ -1,14 +1,15 @@
-import libtcodpy as libtcod
 import json
+
+import libtcodpy as libtcod
 from components.equipable import Equippable
 from components.equipment import Equipment
 from components.fighter import Fighter
 from components.inventory import Inventory
 from components.level import Level
-from entity import Entity, RenderOrder
 from equipment_slots import EquipmentSlots
 from game_messages import MessageLog
 from game_states import GameStates
+from map_objects.entity import Entity, RenderOrder
 from map_objects.game_map import GameMap
 
 

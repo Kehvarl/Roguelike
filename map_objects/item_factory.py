@@ -2,9 +2,9 @@ import libtcodpy as libtcod
 from components.equipable import Equippable
 from components.equipment import EquipmentSlots
 from components.item import Item
-from entity import Entity
 from game_messages import Message
 from item_functions import heal, cast_lightning, cast_fireball, cast_confuse
+from map_objects.entity import Entity
 from random_utils import random_choice_from_dict
 from render_functions import RenderOrder
 
