@@ -68,7 +68,7 @@ def inventory_menu(con, header, player, inventory_width, screen_width, screen_he
 
 def main_menu(con, screen_width, screen_height, background_image,
               title='TOMBS OF THE ANCIENT KINGS',
-              author='Kehvar;',
+              author='Kehvarl',
               option_new='Play a new game',
               option_continue='Continue last game',
               option_quit='Quit',
