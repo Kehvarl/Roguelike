@@ -25,6 +25,8 @@ def kill_monster(monster):
     monster.blocks = False
     monster.fighter = None
     monster.ai = None
+    monster.count_value = 0
+    monster.treasure_value = 0
     monster.name = 'remains of ' + monster.name
     monster.render_order = RenderOrder.CORPSE
 

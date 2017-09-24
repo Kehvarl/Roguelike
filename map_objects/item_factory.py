@@ -25,7 +25,7 @@ class ItemFactory:
         """
         Select a random level-appropriate item from the available items, and add it to the map
         :param dictionary item_dict: Dictionary of all available pre-defined items
-        :param list item_chances: Item-generation probabilities for the current level
+        :param dictionary item_chances: Item-generation probabilities for the current level
         :param list entities: Items and Monsters already on the Map.
         :param int x: X position on map
         :param int y: Y position on map

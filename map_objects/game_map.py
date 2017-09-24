@@ -6,7 +6,7 @@ from game_messages import Message
 from map_objects.entity import Entity
 from map_objects.item_factory import ItemFactory
 from map_objects.monster_factory import MonsterFactory
-from map_objects.rectangle import Rect
+from map_objects.map_room import Room
 from map_objects.spawner_factory import SpawnerFactory
 from map_objects.tile import Tile
 from random_utils import from_dungeon_level
@@ -72,7 +72,7 @@ class GameMap:
             h = randint(room_min_size, room_max_size)
             x = randint(0, map_width - w - 1)
             y = randint(0, map_height - h - 1)
-            new_room = Rect(x, y, w, h)
+            new_room = Room(x, y, w, h)
 
             for other_room in rooms:
                 # If the room overlaps an existing room try again
@@ -118,7 +118,7 @@ class GameMap:
     def create_room(self, room):
         """
         Add a room to the map and set tiles in a room to be Passable
-        :param Rect room: a room-defining rectangle
+        :param Room room: a room-defining rectangle
         """
         for x in range(room.x1 + 1, room.x2):
             for y in range(room.y1 + 1, room.y2):
@@ -154,16 +154,16 @@ class GameMap:
         max_monsters_per_room = from_dungeon_level([[4, 1], [7, 4], [10, 6]], self.dungeon_level)
         max_items_per_room = from_dungeon_level([[1, 1], [2, 4]], self.dungeon_level)
 
-        number_of_monsters = randint(0, max_monsters_per_room)
+        room.monster_limit = randint(0, max_monsters_per_room)
         number_of_items = randint(0, max_items_per_room)
 
         if not is_first_room:
             monster_count = 0
-            while monster_count < number_of_monsters:
+            while monster_count < room.monster_limit:
                 x, y = room.random_point()
                 monster = MonsterFactory.get_monster(self.monster_dict, self.monster_chances,
                                                      entities, x, y)
-                if monster and monster_count + monster.count_value <= number_of_monsters:
+                if monster and monster_count + monster.count_value <= room.monster_limit:
                     entities.append(monster)
                     monster_count += monster.count_value
 

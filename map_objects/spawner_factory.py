@@ -11,9 +11,9 @@ class SpawnerFactory:
         """
         Randomly Select a Monster from the available monsters, and set it in the map
         :param dictionary monster_dict: dictionary of all available pre-defined monsters
-        :param list monster_chances: Monster-generation probabilities for the current level
+        :param dictionary monster_chances: Monster-generation probabilities for the current level
         :param list entities: Items and Monsters already on the Map.
-        :param Rect room: room
+        :param Room room: room
         :param int x: X position on map
         :param int y: Y position on map
         :return Entity: Monster to be placed in dungeon
@@ -31,7 +31,7 @@ class SpawnerFactory:
         :param str monster_key:  Key Value to find Monster from monster_dict
         :param int x: X position on map
         :param int y: Y position on map
-        :param Rect room: room
+        :param Room room: room
         :return Entity: Monster to be placed in dungeon
         """
         monster_choice = monster_dict[monster_key]

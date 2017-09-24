@@ -322,7 +322,9 @@ def play_game(player, entities, game_map, message_log, game_state, con, panel, c
                     if game_state == GameStates.PLAYER_DEAD:
                         break
                 if entity.spawner:
-                    entities.append(entity.spawner.spawn())
+                    new_monster = entity.spawner.spawn(entities, player)
+                    if new_monster:
+                        entities.append(new_monster)
             else:
                 game_state = GameStates.PLAYERS_TURN
 
