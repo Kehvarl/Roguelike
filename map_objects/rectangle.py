@@ -1,3 +1,6 @@
+from random import randint
+
+
 class Rect:
     """
     Rectangles used to define Rooms on the map
@@ -25,3 +28,12 @@ class Rect:
         """
         return (self.x1 <= other.x2 and self.x2 >= other.x1 and
                 self.y1 <= other.y2 and self.y2 >= other.y1)
+
+    def random_point(self):
+        """
+        Return a random point within the current rectangle
+        :return int, int: x-position, y-position within the rectangle
+        """
+        x = randint(self.x1 + 1, self.x2 - 1)
+        y = randint(self.y1 + 1, self.y2 - 1)
+        return x, y

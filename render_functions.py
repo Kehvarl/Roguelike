@@ -76,7 +76,8 @@ def render_all(con, panel, entities, player, game_map, fov_map, fov_recompute, m
                 visible = libtcod.map_is_in_fov(fov_map, x, y)
                 wall = game_map.tiles[x][y].block_sight
 
-                if visible:
+                # TODO Remove debug
+                if visible or True:
                     if wall:
                         libtcod.console_set_char_background(con, x, y, colors.get('light_wall'), libtcod.BKGND_SET)
                     else:
@@ -156,7 +157,7 @@ def draw_entity(con, entity, fov_map, game_map):
     :param game_map: The map holding game tiles
     """
     if libtcod.map_is_in_fov(fov_map, entity.x, entity.y) or (
-                entity.stairs and game_map.tiles[entity.x][entity.y].explored):
+                entity.stairs and game_map.tiles[entity.x][entity.y].explored) or True:
         libtcod.console_set_default_foreground(con, entity.color)
         libtcod.console_put_char(con, entity.x, entity.y, entity.char, libtcod.BKGND_NONE)
 

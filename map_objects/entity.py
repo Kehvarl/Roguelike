@@ -15,6 +15,7 @@ class Entity:
                  fighter=None, ai=None,
                  item=None, inventory=None,
                  equipment=None, equippable=None,
+                 spawner=None,
                  count_value=0, treasure_value=0,
                  stairs=None, level=None, ):
         self.x = x
@@ -34,6 +35,7 @@ class Entity:
         self.level = level
         self.equipment = equipment
         self.equippable = equippable
+        self.spawner = spawner
 
         if self.fighter:
             self.fighter.owner = self
@@ -62,6 +64,9 @@ class Entity:
                 item = Item()
                 self.item = item
                 self.item.owner = self
+
+        if self.spawner:
+            self.spawner.owner = self
 
     def move(self, dx, dy):
         """

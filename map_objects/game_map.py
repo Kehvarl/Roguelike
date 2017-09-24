@@ -7,6 +7,7 @@ from map_objects.entity import Entity
 from map_objects.item_factory import ItemFactory
 from map_objects.monster_factory import MonsterFactory
 from map_objects.rectangle import Rect
+from map_objects.spawner_factory import SpawnerFactory
 from map_objects.tile import Tile
 from random_utils import from_dungeon_level
 from render_functions import RenderOrder
@@ -159,19 +160,23 @@ class GameMap:
         if not is_first_room:
             monster_count = 0
             while monster_count < number_of_monsters:
-                x = randint(room.x1 + 1, room.x2 - 1)
-                y = randint(room.y1 + 1, room.y2 - 1)
+                x, y = room.random_point()
                 monster = MonsterFactory.get_monster(self.monster_dict, self.monster_chances,
                                                      entities, x, y)
                 if monster and monster_count + monster.count_value <= number_of_monsters:
                     entities.append(monster)
                     monster_count += monster.count_value
 
+            # TODO: Clean This Up
+            if randint(0, 2) == 0:
+                x, y = room.random_point()
+                spawner = SpawnerFactory.get_monster_spawner(self.monster_dict, self.monster_chances,
+                                                             entities, x, y, room)
+                entities.append(spawner)
+
         item_count = 0
         while item_count < number_of_items:
-            x = randint(room.x1 + 1, room.x2 - 1)
-            y = randint(room.y1 + 1, room.y2 - 1)
-
+            x, y = room.random_point()
             item = ItemFactory.get_item(self.item_dict, self.item_chances, entities, x, y)
             if item and item_count + item.count_value <= number_of_items:
                 entities.append(item)

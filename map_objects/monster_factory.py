@@ -93,4 +93,3 @@ class MonsterFactory:
                          fighter=fighter_component, ai=ai_component)
 
         return monster
-
