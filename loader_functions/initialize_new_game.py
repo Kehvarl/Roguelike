@@ -18,7 +18,6 @@ def get_constants():
     Manage all the core game settings
     :return dict: initial game constants
     """
-    window_title = "Roguelike Tutorial Revised"
     # Screen Size
     screen_width = 80
     screen_height = 50
@@ -33,10 +32,6 @@ def get_constants():
     # Map size
     map_width = 80
     map_height = 43
-    # Room size and count
-    room_max_size = 10
-    room_min_size = 6
-    max_rooms = 30
 
     # Field-of=View settings
     fov_algorithm = 0
@@ -51,6 +46,19 @@ def get_constants():
         'light_ground': libtcod.Color(200, 180, 50)
     }
 
+    # Load Game Settings from file
+    with open('settings/game.json') as json_data:
+        settings = json.load(json_data)
+        window_title = settings.get('window_title', "Roguelike Engine")
+        title_bg_image = settings['title_menu'].get('background_image')
+        color = settings['title_menu'].get('background_color', 'black')
+        title_bg_color = getattr(libtcod, color, libtcod.black)
+        title_text = settings['title_menu'].get('text')
+        title_author = settings['title_menu'].get('author')
+        room_max_size = settings['map_settings'].get('room_max_size', 10)
+        room_min_size = settings['map_settings'].get('room_min_size', 6)
+        max_rooms = settings['map_settings'].get('max_rooms', 30)
+
     # Load Monsters from file
     with open('settings/monsters.json') as json_data:
         monster_dict = json.load(json_data)
@@ -62,6 +70,10 @@ def get_constants():
     # Convert settings to passable dictionary
     constants = {
         'window_title': window_title,
+        'title_bg_image': title_bg_image,
+        'title_bg_color': title_bg_color,
+        'title_text': title_text,
+        'title_author': title_author,
         'screen_width': screen_width,
         'screen_height': screen_height,
         'bar_width': bar_width,

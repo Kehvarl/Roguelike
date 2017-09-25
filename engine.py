@@ -10,6 +10,7 @@ from loader_functions.initialize_new_game import get_constants, get_game_variabl
 from map_objects.entity import get_blocking_entities_at_location, Entity
 from menus import main_menu, message_box
 from render_functions import clear_all, render_all, RenderOrder
+from os.path import isfile
 
 
 def main():
@@ -31,17 +32,23 @@ def main():
     show_main_menu = True
     show_load_error_message = False
 
-    main_menu_background_image = libtcod.image_load('menu_background1.png')
-
     key = libtcod.Key()
     mouse = libtcod.Mouse()
+
+    if constants.get('title_bg_image') and isfile(constants['title_bg_image']):
+        main_menu_background_image = libtcod.image_load(constants['title_bg_image'])
+    else:
+        main_menu_background_image = None
 
     while not libtcod.console_is_window_closed():
         libtcod.sys_check_for_event(libtcod.EVENT_KEY_PRESS | libtcod.EVENT_MOUSE, key, mouse)
 
         if show_main_menu:
             main_menu(con, constants['screen_width'], constants['screen_height'],
-                      main_menu_background_image)
+                      background_image=main_menu_background_image,
+                      background_color=constants['title_bg_color'],
+                      title=constants['title_text'],
+                      author=constants['title_author'])
 
             if show_load_error_message:
                 message_box(con, 'No save game to load', 50, constants['screen_width'], constants['screen_height'])

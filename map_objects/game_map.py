@@ -151,6 +151,7 @@ class GameMap:
         :param entities: A list of monsters and their locations in the map
         :param is_first_room: Is this the first room in the maze.
         """
+        # TODO: Load from Game Settings
         max_monsters_per_room = from_dungeon_level([[4, 1], [7, 4], [10, 6]], self.dungeon_level)
         max_items_per_room = from_dungeon_level([[1, 1], [2, 4]], self.dungeon_level)
 

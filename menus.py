@@ -66,9 +66,11 @@ def inventory_menu(con, header, player, inventory_width, screen_width, screen_he
     menu(con, header, options, inventory_width, screen_width, screen_height)
 
 
-def main_menu(con, screen_width, screen_height, background_image,
-              title='TOMBS OF THE ANCIENT KINGS',
-              author='Kehvarl',
+def main_menu(con, screen_width, screen_height,
+              background_image=None,
+              background_color=None,
+              title='Roguelike Game',
+              author='Author',
               option_new='Play a new game',
               option_continue='Continue last game',
               option_quit='Quit',
@@ -79,6 +81,7 @@ def main_menu(con, screen_width, screen_height, background_image,
     :param int screen_width: Screen size
     :param int screen_height: Screen size
     :param background_image: Image to Display
+    :param background_color: Color to use if no image present
     :param str title: Game Title text to display
     :param str author: Name to display for the author
     :param str option_new: Text for New Game option
@@ -86,7 +89,11 @@ def main_menu(con, screen_width, screen_height, background_image,
     :param str option_quit: Text for Quit option
     :param list additional_options: Other Main-Menu options to display
     """
-    libtcod.image_blit_2x(background_image, 0, 0, 0)
+    if background_image:
+        libtcod.image_blit_2x(background_image, 0, 0, 0)
+    elif background_color:
+        libtcod.console_set_default_background(0, background_color)
+        libtcod.console_clear(0)
 
     libtcod.console_set_default_foreground(0, libtcod.yellow)
     libtcod.console_print_ex(0, int(screen_width / 2), int(screen_height / 2) - 4, libtcod.BKGND_NONE, libtcod.CENTER,

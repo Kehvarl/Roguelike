@@ -1,0 +1,21 @@
+{
+  "window_title": "Roguelike Tutorial Revised",
+  "title_menu": {
+    "background_image": "menu_background1.png",
+    "background_color": "blue",
+    "text": "TOMBS OF THE ANCIENT KINGS",
+    "author": "Kehvarl",
+    "menu_options": {
+      "option_new": "Play a new game",
+      "option_continue": "Continue last game",
+      "option_quit": "Quit"
+    }
+  },
+  "map_settings": {
+    "room_max_size": 10,
+    "room_min_size": 6,
+    "max_rooms": 30,
+    "max_monster_per_room": [[4, 1], [7, 4], [10, 6]],
+    "max_items_per_room": [[1, 1], [2, 4]]
+  }
+}
